@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('firstname');
             $table->string('lastname');
             $table->integer('jersey_number')->unique;
+            $table->string('picture')->nullable();
             $table->foreignId('position_id')->constrained('positions');
             $table->timestamps();
         });

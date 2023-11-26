@@ -3,9 +3,10 @@
 namespace App\Core\Players\Repositories;
 
 use App\Core\Players\Player;
-use App\Core\Players\Repositories\Interfaces\PlayerRepositoryInterface;
-use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Core\Positions\Position;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use App\Core\Players\Repositories\Interfaces\PlayerRepositoryInterface;
 
 final class PlayerRepository implements PlayerRepositoryInterface
 {
@@ -20,21 +21,25 @@ final class PlayerRepository implements PlayerRepositoryInterface
         string $orderBy = 'firstname',
         string $sortOrder = 'asc'
     ): LengthAwarePaginator {
-        $query = $this->playerModel->newQuery()
-            ->when($params['name'], function ($q) use ($params) {
-                return $q->where(DB::raw("CONCAT(firstname, ' ', lastname)"), 'like', '%' . $params['name'] . '%')
-                    ->orWhere(DB::raw("CONCAT(lastname, ' ', firstname)"), 'like', '%' . $params['name'] . '%');
-            })
-            ->when($params['position'], function ($q) use ($params) {
-                return $q->where('position_id', $params['position']);
-            });
+        $query = $this->playerModel->newQuery();
+
+            if(isset($params['name'])) {
+                $query = $query->where(DB::raw("CONCAT(firstname, ' ', lastname)"), 'like', '%' . $params['name'] . '%')
+                ->orWhere(DB::raw("CONCAT(lastname, ' ', firstname)"), 'like', '%' . $params['name'] . '%');
+            }
+
+            if(isset($params['position'])) {
+                $query = $query->where('position_id', $params['position']);
+            }
 
         return $query->orderBy($orderBy, $sortOrder)->paginate(page: $page, perPage: $perPage);
     }
 
-    public function addNew(array $body): Player
+    public function addNew(array $body, Position $position): Player
     {
-        $player = $this->playerModel->create($body);
+        $player = $this->playerModel->make($body);
+        $player->position()->associate($position);
+        $player->save();
 
         return $player;
     }

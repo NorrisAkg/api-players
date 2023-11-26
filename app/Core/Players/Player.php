@@ -17,7 +17,7 @@ class Player extends Model
         'picture',
     ];
 
-    public function position (): BelongsTo
+    public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
     }
@@ -25,7 +25,7 @@ class Player extends Model
     protected function fullname(): Attribute
     {
         return Attribute::make(
-            get: fn($value, $attributes) => $attributes['firstname'] . ' ' . $attributes['lastname']
+            get: fn ($value, $attributes) => $attributes['firstname'] . ' ' . $attributes['lastname']
         );
     }
 }
