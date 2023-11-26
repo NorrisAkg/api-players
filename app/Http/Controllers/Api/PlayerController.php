@@ -15,7 +15,6 @@ final class PlayerController extends ApiBaseController
 {
     public function __construct(protected PlayerRepositoryInterface $playerRepository, protected PositionRepositoryInterface $positionRepository)
     {
-
     }
 
     public function index(Request $request): JsonResponse
@@ -39,5 +38,17 @@ final class PlayerController extends ApiBaseController
         $player = $this->playerRepository->addNew(body: $body, position: $position);
 
         return $this->successResponse(data: new PlayerResource($player), status: 201);
+    }
+
+    public function update(string $id, Request $request): JsonResponse
+    {
+        $position = null;
+        $player = $this->playerRepository->findOne($id);
+        if ($request->has('position_id'))
+            $position = $this->positionRepository->findOne($request->input('position_id'));
+
+        $player = $this->playerRepository->update(player: $player, body: $request->except('position_id'), position: $position);
+
+        return $this->successResponse(data: new PlayerResource($player));
     }
 }

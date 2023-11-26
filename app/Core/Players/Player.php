@@ -5,10 +5,17 @@ namespace App\Core\Players;
 use App\Core\Positions\Position;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Player extends Model
 {
+    use HasUuids;
+
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    public $incrementing = false;
+
     protected $fillable = [
         'firstname',
         'lastname',

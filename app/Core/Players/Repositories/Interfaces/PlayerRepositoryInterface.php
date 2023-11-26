@@ -11,9 +11,9 @@ interface PlayerRepositoryInterface {
 
     public function addNew(array $body, Position $position): Player;
 
-    public function findOne(int $id): Player;
+    public function findOne(string $id): Player;
 
-    public function update(Player $player, array $body): Player;
+    public function update(Player $player, array $body, Position $position = null): Player;
 
     public function delete(Player $player): bool;
 }

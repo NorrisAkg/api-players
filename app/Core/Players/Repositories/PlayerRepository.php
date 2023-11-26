@@ -44,16 +44,20 @@ final class PlayerRepository implements PlayerRepositoryInterface
         return $player;
     }
 
-    public function findOne(int $id): Player
+    public function findOne(string $id): Player
     {
         $player = $this->playerModel->findOrFail($id);
 
         return $player;
     }
 
-    public function update(Player $player, array $body): Player
+    public function update(Player $player, array $body, Position $position = null): Player
     {
         $player->update($body);
+        if(!is_null($position)) {
+            $player->position()->associate($position);
+            $player->save();
+        }
 
         return $player;
     }
