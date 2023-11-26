@@ -40,6 +40,13 @@ final class PlayerController extends ApiBaseController
         return $this->successResponse(data: new PlayerResource($player), status: 201);
     }
 
+    public function show(string $id): JsonResponse
+    {
+        $player = $this->playerRepository->findOne($id);
+
+        return $this->successResponse(data: new PlayerResource($player));
+    }
+
     public function update(string $id, Request $request): JsonResponse
     {
         $position = null;
@@ -50,5 +57,31 @@ final class PlayerController extends ApiBaseController
         $player = $this->playerRepository->update(player: $player, body: $request->except('position_id'), position: $position);
 
         return $this->successResponse(data: new PlayerResource($player));
+    }
+
+    public function getPlayerPerformance(string $id): JsonResponse
+    {
+        // Retrieve the player according to given id
+        $player = $this->playerRepository->findOne($id);
+
+        // Get a list of all games in which the player participated
+        $playerGames = $player->load('games')->getRelation('games');
+
+        // count total games of users
+        $totalGames = count($playerGames);
+
+        //
+        $points_avg = collect($playerGames)->sum('points_scored') * 100 / $totalGames;
+        $assists_avg = collect($playerGames)->sum('assists_delivered') * 100 / $totalGames;
+        $distance_avg = round((collect($playerGames)->sum('distance_delivered') * 100 / $totalGames), 2);
+
+        //TODO To finish implementing
+        $stats = [
+            'points_avg'    => $points_avg,
+            'assists_avg'   => $assists_avg,
+            'distance_avg'  => $distance_avg,
+        ];
+
+        return $this->successResponse(data: $stats);
     }
 }

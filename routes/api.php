@@ -23,6 +23,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::controller(PlayerController::class)->prefix('players')->group(function() {
     Route::get('', 'index');
     Route::post('', 'create');
+    Route::get('{id}', 'show');
+    Route::put('{id}', 'update');
 });
 
 Route::controller(PositionController::class)->prefix('positions')->group(function() {
