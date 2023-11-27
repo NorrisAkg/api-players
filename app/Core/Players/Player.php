@@ -4,19 +4,26 @@ namespace App\Core\Players;
 
 use App\Core\Games\Game;
 use App\Core\Positions\Position;
+use Database\Factories\PlayerFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Player extends Model
 {
-    use HasUuids;
+    use HasFactory, HasUuids;
 
     protected $primaryKey = 'id';
     protected $keyType = 'string';
     public $incrementing = false;
+
+    protected static function newFactory()
+    {
+        return PlayerFactory::new();
+    }
 
     protected $fillable = [
         'firstname',
