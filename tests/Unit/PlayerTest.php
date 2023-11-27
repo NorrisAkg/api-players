@@ -21,18 +21,13 @@ it('can create player with position', function() {
     ];
 
     $response = $this->postJson('/players', $playerData);
+    $data = $response['data'];
 
-    expect($response)->toContain([
-        // 'data' => $playerData,
+    $response->assertJson([
+        'data' => $response['data'],
         'success' => true,
-        'message' => 'Success',
+        'success_message' => 'Success',
     ]);
-    // $response->assertJsonContains([
-    //     'data' => $playerData,
-    //     'success' => true,
-    //     'message' => 'Success',
-    // ]);
 
     $this->assertDatabaseHas('players', $playerData);
-    // TODO finish implementing
 });
