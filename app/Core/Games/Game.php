@@ -15,6 +15,9 @@ class Game extends Model
         'opponent_score',
     ];
 
+    // Duration of every Game instance
+    public const DURATION = 90;
+
     public function players(): BelongsToMany
     {
         return $this->belongsToMany(Player::class, 'game_player')
