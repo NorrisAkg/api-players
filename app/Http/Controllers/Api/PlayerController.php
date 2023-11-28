@@ -59,6 +59,15 @@ final class PlayerController extends ApiBaseController
         return $this->successResponse(data: new PlayerResource($player));
     }
 
+    public function delete(string $id): JsonResponse
+    {
+        $player = $this->playerRepository->findOne($id);
+
+        return $this->playerRepository->delete($player)
+            ? $this->successResponse(message: 'Player deleted successfully')
+            : $this->errorResponse(message: 'An error occured');
+    }
+
     public function getPlayerPerformance(string $id): JsonResponse
     {
         // Retrieve the player according to given id

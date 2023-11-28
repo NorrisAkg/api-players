@@ -25,6 +25,7 @@ Route::controller(PlayerController::class)->prefix('players')->group(function() 
     Route::post('', 'create');
     Route::get('{id}', 'show');
     Route::put('{id}', 'update');
+    Route::delete('{id}', 'delete');
     Route::get('{id}/stats-avg', 'getPlayerPerformance');
 });
 
