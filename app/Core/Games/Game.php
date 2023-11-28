@@ -3,11 +3,20 @@
 namespace App\Core\Games;
 
 use App\Core\Players\Player;
+use Database\Factories\GameFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Game extends Model
 {
+    use HasFactory;
+
+    protected static function newFactory()
+    {
+        return GameFactory::new();
+    }
+
     protected $fillable = [
         'reference',
         'opponent',
