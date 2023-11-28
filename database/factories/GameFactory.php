@@ -20,7 +20,10 @@ class GameFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'reference' => $this->faker->numberBetween(1, 100000),
+            'opponent' => $this->faker->name,
+            'host_score' => $this->faker->numberBetween(1, 9),
+            'opponent_score' => $this->faker->numberBetween(1, 9),
         ];
     }
 }
