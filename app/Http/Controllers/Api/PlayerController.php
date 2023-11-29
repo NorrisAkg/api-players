@@ -43,7 +43,6 @@ final class PlayerController extends ApiBaseController
     public function show(string $id): JsonResponse
     {
         $player = $this->playerRepository->findOne($id);
-
         return $this->successResponse(data: new PlayerResource($player));
     }
 
@@ -79,12 +78,11 @@ final class PlayerController extends ApiBaseController
         // count total games of users
         $totalGames = count($playerGames);
 
-        //
+        // Handle player stats
         $points_avg = collect($playerGames)->sum('points_scored') * 100 / $totalGames;
         $assists_avg = collect($playerGames)->sum('assists_delivered') * 100 / $totalGames;
         $distance_avg = round((collect($playerGames)->sum('distance_delivered') * 100 / $totalGames), 2);
 
-        //TODO To finish implementing
         $stats = [
             'points_avg'    => $points_avg,
             'assists_avg'   => $assists_avg,
